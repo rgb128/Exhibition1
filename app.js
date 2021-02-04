@@ -5,7 +5,7 @@ const creationDistance = -10000; //px
 const speed = 1; // px/ms
 const deletingDistance = 5000; //px
 const movingDelta = 5; //px
-const angleDelta = .2; // deg
+const angleDelta = 0; // deg (.2)
 const perspective = 1000; //px
 const portalBox = {
     x: document.documentElement.clientWidth / 3,
@@ -13,7 +13,7 @@ const portalBox = {
     width: document.documentElement.clientWidth / 3,
     height: document.documentElement.clientHeight / 3
 }
-const border = 5; //px
+const border = 0; //px
 
 let previousTime = performance.now();
 let millisFromLastCreation = undefined;
@@ -58,7 +58,7 @@ const animate = function (time) {
         portal.distance += pixelDelta;
         portal.style.transform = `translateZ(${portal.distance}px)`;
         if (portal.distance >= perspective) {
-            if (Math.abs(screen.data.x) <= portalBox.width / 2 && Math.abs(screen.data.y) <= portalBox.height / 2) {
+            if (Math.abs(screen.data.x) <= (portalBox.width / 2) && Math.abs(screen.data.y) <= (portalBox.height / 2)) {
                 // Check getting into portal
                 console.log('portal got');
             }
