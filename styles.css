@@ -129,10 +129,10 @@
 }
 .portal {
     position: absolute;
-    top: calc(-5px + 33.333vh);
+    /* top: calc(-5px + 33.333vh);
     left: calc(-5px + 33.333vw);
     width: 33.333vw;
-    height: 33.333vh;
+    height: 33.333vh; */
     border: 5px solid red;
     /* transform: translate3d(0px, 0px, 0px); */
     transform-origin: center;
