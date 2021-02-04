@@ -5,6 +5,10 @@
     transform-style: preserve-3d;
 }
 
+body{
+    background-color: #000;
+}
+
 #container{
     position: fixed;
     top: 0px;
@@ -41,8 +45,26 @@
     transform-origin: center;
 }
 .portal {
+    top: calc(-5px + 33.333vh);
+    left: calc(-5px + 33.333vw);
+    width: 33.333vw;
+    height: 33.333vh;
+    transform: translateZ(0vw);
     position: absolute;
     border: 5px solid red;
-    /* background-color: rgb(255, 179, 179); */
+    /* background-color: white; */
     transform-origin: center;
+    /* clip-path: polygon(0px 0px, 0px 100px, 100px 100px, 0px 0px); */
+}
+
+.portal > .left-wall {
+    position: absolute;
+    transform-origin: left center;
+    top: calc(-5px);
+    left: calc(-5px);
+    width: 330.333vw;
+    height: 33.333vh;
+    /* border: 5px solid red; */
+    background-color: white;
+    transform: rotateY(90deg);
 }

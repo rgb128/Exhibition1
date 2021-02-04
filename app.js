@@ -21,7 +21,7 @@ let millisFromLastCreation = undefined;
 const screen = document.getElementById('screen');
 screen.data = {
     x: 0,
-    y: 0,
+    y: -250,
     rotateX: 0,
     rotateY: 0
 }
@@ -48,7 +48,7 @@ const animate = function (time) {
         portal.style.left = portalBox.x - border + 'px';
         portal.style.width = portalBox.width + 'px';
         portal.style.height = portalBox.height + 'px';
-        document.getElementById('screen').appendChild(portal);
+        // document.getElementById('screen').appendChild(portal);
     }
     millisFromLastCreation += delta;
 
@@ -67,10 +67,13 @@ const animate = function (time) {
     }
     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
 }
 
-animate();
+// animate();
+
+
+screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
 window.onkeydown = (e) => {
     const code = e.code;
@@ -87,4 +90,29 @@ window.onkeydown = (e) => {
         screen.data.x += movingDelta;
         screen.data.rotateY += angleDelta;
     }
+
+    screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
+    calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
+
+}
+
+calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
+
+/**
+ * from bottom only
+ * @param {number} perspective 
+ * @param {number} distance 
+ * @param {number} centerToBottom 
+ * @param {number} centerToTop 
+ */
+function calculateLeftWallClip(perspective, distance, centerToBottom, centerToTop) {
+    if (centerToBottom <= 0) {
+        // all wall is visible
+    }
+    const allDistance = perspective + distance;
+    const beforeZLeg = allDistance;
+    const beforeYLeg = centerToBottom;
+    const afterYLeg = centerToTop-centerToBottom; // height of portal
+    const afterZLeg = beforeZLeg * afterYLeg / beforeYLeg; // result
+    document.querySelector('.left-wall').style.clipPath = `polygon(0px 0px, ${afterZLeg}px 0px, 0px ${afterYLeg}px)`;
 }
