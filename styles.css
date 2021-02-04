@@ -45,8 +45,8 @@ body{
     transform-origin: center;
 }
 .portal {
-    top: calc(-5px + 33.333vh);
-    left: calc(-5px + 33.333vw);
+    top: 33.333vh;
+    left: 33.333vw;
     width: 33.333vw;
     height: 33.333vh;
     transform: translateZ(0vw);
