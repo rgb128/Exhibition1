@@ -43,5 +43,6 @@
 .portal {
     position: absolute;
     border: 5px solid red;
+    /* background-color: rgb(255, 179, 179); */
     transform-origin: center;
 }

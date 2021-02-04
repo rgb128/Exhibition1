@@ -44,8 +44,8 @@ const animate = function (time) {
         portal.classList.add('portal');
         portal.distance = creationDistance;
         portal.style.transform = `translateZ(${creationDistance}px)`;
-        portal.style.top = portalBox.x - border + 'px';
-        portal.style.left = portalBox.y - border + 'px';
+        portal.style.top = portalBox.y - border + 'px';
+        portal.style.left = portalBox.x - border + 'px';
         portal.style.width = portalBox.width + 'px';
         portal.style.height = portalBox.height + 'px';
         document.getElementById('screen').appendChild(portal);
