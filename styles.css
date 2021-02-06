@@ -3,6 +3,7 @@
     padding: 0px;
     box-sizing: border-box;
     transform-style: preserve-3d;
+    border: none;
 }
 
 body{
@@ -15,7 +16,6 @@ body{
     left: 0px;
     width: 100vw;
     height: 100vh;
-    border: 0px solid blue;
     perspective: 1000px;
     perspective-origin: center;
     overflow: hidden;
@@ -51,11 +51,9 @@ body{
     height: 33.333vh;
     transform: translateZ(0vw);
     position: absolute;
-    border: 0px solid red;
-    background-color: rgba(255, 0, 0, .3);
-    /* background-color: white; */
+    border: none;
+    background-color: rgba(255, 255, 255, .5);
     transform-origin: center;
-    /* clip-path: polygon(0px 0px, 0px 100px, 100px 100px, 0px 0px); */
 }
 
 .portal > .left-wall {
@@ -65,8 +63,7 @@ body{
     left: 0px;
     width: 330.333vw;
     height: 33.333vh;
-    /* border: 5px solid red; */
-    background-color: white;
+    background-color: red;
     transform: rotateY(90deg);
 }
 
@@ -77,7 +74,36 @@ body{
     left: 33.333vw;
     width: 330.333vw;
     height: 33.333vh;
-    /* border: 5px solid red; */
-    background-color: white;
+    background-color: green;
     transform: rotateY(90deg);
+}
+.portal > .top-wall {
+    position: absolute;
+    transform-origin: top center;
+    top: 0px;
+    left: 0px;
+    width: 33.333vw;
+    height: 330.333vw;
+    background-color: blue;
+    transform: rotateX(-90deg);
+}
+.portal > .bottom-wall {
+    position: absolute;
+    transform-origin: top center;
+    top: 33.333vh;
+    left: 0px;
+    width: 33.333vw;
+    height: 330.333vw;
+    background-color: yellow;
+    transform: rotateX(-90deg);
+}
+.portal > .end {
+    position: absolute;
+    transform-origin: top center;
+    top: 0px;
+    left: 0px;
+    width: 33.333vw;
+    height: 33.333vh;
+    background-color: white;
+    transform: translateZ(-330.333vw);
 }
