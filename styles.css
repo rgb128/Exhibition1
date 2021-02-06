@@ -51,7 +51,8 @@ body{
     height: 33.333vh;
     transform: translateZ(0vw);
     position: absolute;
-    border: 5px solid red;
+    border: 0px solid red;
+    background-color: rgba(255, 0, 0, .3);
     /* background-color: white; */
     transform-origin: center;
     /* clip-path: polygon(0px 0px, 0px 100px, 100px 100px, 0px 0px); */
@@ -60,11 +61,23 @@ body{
 .portal > .left-wall {
     position: absolute;
     transform-origin: left center;
-    top: calc(-5px);
-    left: calc(-5px);
+    top: 0px;
+    left: 0px;
     width: 330.333vw;
     height: 33.333vh;
     /* border: 5px solid red; */
     background-color: white;
     transform: rotateY(90deg);
+}
+
+.portal > .right-wall {
+    position: absolute;
+    transform-origin: right center;
+    top: 0px;
+    right: 0px;
+    width: 330.333vw;
+    height: 33.333vh;
+    /* border: 5px solid red; */
+    background-color: white;
+    transform: rotateY(-90deg);
 }
