@@ -179,10 +179,10 @@ function clipPathOnPortal(walls, distance, x, y, width, height, length) {
 
     if (-y > height/2) { // top side is visible
         const topLength = height * distance / (-y - height/2);
-        walls.right.style.clipPath = `polygon(${length}px 0px, ${length - topLength}px 0px, ${length}px ${height}px`;
+        walls.right.style.clipPath = `polygon(0px 0px, ${topLength}px 0px, 0px ${height}px`;
     } else if (y > height/2) { // bottom side is visible
         const bottomLength = height * distance / (y - height/2);
-        walls.right.style.clipPath = `polygon(${length}px 0px, ${length - bottomLength}px ${height}px, ${length}px ${height}px`;
+        walls.right.style.clipPath = `polygon(0px 0px, ${bottomLength}px ${height}px, 0px ${height}px`;
     } else { // all sides are visible
         walls.right.style.clipPath = `none`;
     }

@@ -72,12 +72,12 @@ body{
 
 .portal > .right-wall {
     position: absolute;
-    transform-origin: right center;
+    transform-origin: left center;
     top: 0px;
-    right: 0px;
+    left: 33.333vw;
     width: 330.333vw;
     height: 33.333vh;
     /* border: 5px solid red; */
     background-color: white;
-    transform: rotateY(-90deg);
+    transform: rotateY(90deg);
 }
