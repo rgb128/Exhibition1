@@ -92,11 +92,15 @@ window.onkeydown = (e) => {
     }
 
     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
-    calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
+    // calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
 
+    clipPathOnPortal(document.querySelector('.left-wall'), perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
+
+    // console.log(screen.data);
 }
+clipPathOnPortal(document.querySelector('.left-wall'), perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
 
-calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
+// calculateLeftWallClip(perspective, 0, -screen.data.y - portalBox.height/2, -screen.data.y + portalBox.height/2);
 
 /**
  * from bottom only
@@ -115,4 +119,36 @@ function calculateLeftWallClip(perspective, distance, centerToBottom, centerToTo
     const afterYLeg = centerToTop-centerToBottom; // height of portal
     const afterZLeg = beforeZLeg * afterYLeg / beforeYLeg; // result
     document.querySelector('.left-wall').style.clipPath = `polygon(0px 0px, ${afterZLeg}px 0px, 0px ${afterYLeg}px)`;
+}
+
+/**
+ * 
+ * @param {HTMLElement} element
+ * @param {number} distance distance from POV to the plane with etrance to tunnel. Must be +
+ * @param {number} x x coordinate of center, if 0,0 is POV. + is right
+ * @param {number} y y coordinate of center, if 0,0 is POV. + is bottom
+ * @param {number} width width of tunnel
+ * @param {number} height leight if tunnel
+ * @param {number} length length or depth of tunnel. always +
+ */
+function clipPathOnPortal(element, distance, x, y, width, height, length) {
+    // LEFT
+    if (x > width/2) { // invisible
+        element.style.width = '0px';
+    } else if ( x < -(width * distance / length + width/2)) { // length must be cropped
+        const newLength = width * distance / (-x - width/2);
+        element.style.width = newLength + 'px';
+    } else { // full length is visible
+        element.style.width = length + 'px';
+    }
+
+    if (-y > height/2) { // top side is visible
+        const topLength = height * distance / (-y - height/2);
+        element.style.clipPath = `polygon(0px 0px, ${topLength}px 0px, 0px ${height}px`;
+    } else if (y > height/2) { // bottom side is visible
+        const bottomLength = height * distance / (y - height/2);
+        element.style.clipPath = `polygon(0px 0px, ${bottomLength}px ${height}px, 0px ${height}px`;
+    } else { // all sides are visible
+        element.style.clipPath = `none`;
+    }
 }
