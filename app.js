@@ -1,122 +1,159 @@
 'use strict';
 
-const creationMs = 1000; //px
-const creationDistance = -10000; //px
-const speed = 1; // px/ms
-const deletingDistance = 5000; //px
-const movingDelta = 5; //px
-const angleDelta = 0; // deg (.2)
-const perspective = 1000; //px
-const portalBox = {
-    x: document.documentElement.clientWidth / 3,
-    y: document.documentElement.clientHeight / 3,
-    width: document.documentElement.clientWidth / 3,
-    height: document.documentElement.clientHeight / 3
+
+const container = document.getElementById('container');
+const screen = document.getElementById('screen');
+/** @type {Configurations} */
+let CONFIG;
+
+class Configurations {
+    portalDefaults = {
+        speed: 1,
+        z: 1000,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        length: 1000
+    };
+    defaults = {
+        x: 0,
+        y: 0
+    }
+    consts = {
+        perspective: 1000,
+        container: document.getElementById('screen'),
+        movingDelta = 5
+    };
+    screen = {
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight
+    };
+    position = {
+        x: this.defaults.x,
+        y: this.defaults.y,
+    }
 }
-const border = 0; //px
+
+function updateConfig() {
+    container.style.perspective = CONFIG.consts.perspective + 'px';
+    CONFIG = new Configurations();
+    screen.data = new ScreenData();
+}
+window.addEventListener('resize', (e) => {
+    updateConfig();
+});
+
+// function move(x, y) {
+
+// }
+
+/**
+ * Ehen user enters portal
+ * @callback onPortalEnter
+ * @param {Portal} portal
+ * @returns {void}
+ */
+
+
+
+// const creationMs = 1000; //px
+// const creationDistance = -10000; //px
+// const speed = 1; // px/ms
+// const deletingDistance = 5000; //px
+// const movingDelta = 5; //px
+// const angleDelta = 0; // deg (.2)
+// const perspective = 1000; //px
+// const portalBox = {
+//     x: document.documentElement.clientWidth / 3,
+//     y: document.documentElement.clientHeight / 3,
+//     width: document.documentElement.clientWidth / 3,
+//     height: document.documentElement.clientHeight / 3
+// }
+// const border = 0; //px
 
 let previousTime = performance.now();
 let millisFromLastCreation = undefined;
 
-const screen = document.getElementById('screen');
-screen.data = {
-    x: 0,
-    y: -250,
-    rotateX: 0,
-    rotateY: 0
-}
-
-class Walls {
-    /** @type {HTMLElement} */
-    left;
-    /** @type {HTMLElement} */
-    right;
-    /** @type {HTMLElement} */
-    top;
-    /** @type {HTMLElement} */
-    bottom;
-    /** @type {HTMLElement} */
-    end;
-}
-const tunnelWalls = new Walls;
-tunnelWalls.left = document.querySelector('.left-wall');
-tunnelWalls.right = document.querySelector('.right-wall');
-tunnelWalls.top = document.querySelector('.top-wall');
-tunnelWalls.bottom = document.querySelector('.bottom-wall');
-tunnelWalls.end = document.querySelector('.end');
+// const tunnelWalls = new Walls;
+// tunnelWalls.left = document.querySelector('.left-wall');
+// tunnelWalls.right = document.querySelector('.right-wall');
+// tunnelWalls.top = document.querySelector('.top-wall');
+// tunnelWalls.bottom = document.querySelector('.bottom-wall');
+// tunnelWalls.end = document.querySelector('.end');
 
 /**
  * Main function for all animations
  * @param {number} time 
  */
-const animate = function (time) {
-    if (typeof time !== 'number') time = 0;
+// const animate = function (time) {
+//     if (typeof time !== 'number') time = 0;
 
-    const delta = time - previousTime;
-    previousTime = time;
+//     const delta = time - previousTime;
+//     previousTime = time;
     
-    if (millisFromLastCreation === undefined) millisFromLastCreation = creationMs;
-    // Create new portion(s) of clocks
-    while (millisFromLastCreation >= creationMs) {
-        millisFromLastCreation -= creationMs;
-        const portal = document.createElement('div');
-        portal.classList.add('portal');
-        portal.distance = creationDistance;
-        portal.style.transform = `translateZ(${creationDistance}px)`;
-        portal.style.top = portalBox.y - border + 'px';
-        portal.style.left = portalBox.x - border + 'px';
-        portal.style.width = portalBox.width + 'px';
-        portal.style.height = portalBox.height + 'px';
-        // document.getElementById('screen').appendChild(portal);
-    }
-    millisFromLastCreation += delta;
+//     if (millisFromLastCreation === undefined) millisFromLastCreation = creationMs;
+//     // Create new portion(s) of clocks
+//     while (millisFromLastCreation >= creationMs) {
+//         millisFromLastCreation -= creationMs;
+//         const portal = document.createElement('div');
+//         portal.classList.add('portal');
+//         portal.distance = creationDistance;
+//         portal.style.transform = `translateZ(${creationDistance}px)`;
+//         portal.style.top = portalBox.y - border + 'px';
+//         portal.style.left = portalBox.x - border + 'px';
+//         portal.style.width = portalBox.width + 'px';
+//         portal.style.height = portalBox.height + 'px';
+//         // document.getElementById('screen').appendChild(portal);
+//     }
+//     millisFromLastCreation += delta;
 
-    const pixelDelta = speed * delta;
-    const portals = Array.from(document.querySelectorAll('#screen > .portal'));
-    for (const portal of portals) {
-        portal.distance += pixelDelta;
-        portal.style.transform = `translateZ(${portal.distance}px)`;
-        if (portal.distance >= perspective) {
-            if (Math.abs(screen.data.x) <= (portalBox.width / 2) && Math.abs(screen.data.y) <= (portalBox.height / 2)) {
-                // Check getting into portal
-                console.log('portal got');
-            }
-            portal.remove();
-        }
-    }
-    screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
+//     const pixelDelta = speed * delta;
+//     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+//     for (const portal of portals) {
+//         portal.distance += pixelDelta;
+//         portal.style.transform = `translateZ(${portal.distance}px)`;
+//         if (portal.distance >= perspective) {
+//             if (Math.abs(screen.data.x) <= (portalBox.width / 2) && Math.abs(screen.data.y) <= (portalBox.height / 2)) {
+//                 // Check getting into portal
+//                 console.log('portal got');
+//             }
+//             portal.remove();
+//         }
+//     }
+//     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
-    // requestAnimationFrame(animate);
-}
+//     // requestAnimationFrame(animate);
+// }
 
 // animate();
 
 
-screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
+// screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
-window.onkeydown = (e) => {
-    const code = e.code;
-    if (code === 'ArrowUp' || code === 'KeyW') {
-        screen.data.y += movingDelta;
-        screen.data.rotateX -= angleDelta;
-    } else if (code === 'ArrowDown' || code === 'KeyS') {
-        screen.data.y -= movingDelta;
-        screen.data.rotateX += angleDelta;
-    } else if (code === 'ArrowRight' || code === 'KeyD') {
-        screen.data.x -= movingDelta;
-        screen.data.rotateY -= angleDelta;
-    } else if (code === 'ArrowLeft' || code === 'KeyA') {
-        screen.data.x += movingDelta;
-        screen.data.rotateY += angleDelta;
-    }
+// window.onkeydown = (e) => {
+//     const code = e.code;
+//     if (code === 'ArrowUp' || code === 'KeyW') {
+//         screen.data.y += movingDelta;
+//         screen.data.rotateX -= angleDelta;
+//     } else if (code === 'ArrowDown' || code === 'KeyS') {
+//         screen.data.y -= movingDelta;
+//         screen.data.rotateX += angleDelta;
+//     } else if (code === 'ArrowRight' || code === 'KeyD') {
+//         screen.data.x -= movingDelta;
+//         screen.data.rotateY -= angleDelta;
+//     } else if (code === 'ArrowLeft' || code === 'KeyA') {
+//         screen.data.x += movingDelta;
+//         screen.data.rotateY += angleDelta;
+//     }
 
-    screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
+//     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
-    clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
+//     clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
 
-    // console.log(screen.data);
-}
-clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
+//     // console.log(screen.data);
+// }
+// clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
 
 
 /**
@@ -229,5 +266,111 @@ function clipPathOnPortal(walls, distance, x, y, width, height, length) {
         cropBottom = cropBottom < 0 ? 0 : cropBottom > height ? height : cropBottom;
 
         walls.end.style.clipPath = `polygon(${cropLeft}px ${cropTop}px, ${cropRight}px ${cropTop}px, ${cropRight}px ${cropBottom}px, ${cropLeft}px ${cropBottom}px)`;
+    }
+}
+
+
+class ScreenData {
+    x = CONFIG.defaults.x;
+    y = CONFIG.defaults.y;
+};
+class Walls {
+    /** @type {HTMLElement} */
+    left;
+    /** @type {HTMLElement} */
+    right;
+    /** @type {HTMLElement} */
+    top;
+    /** @type {HTMLElement} */
+    bottom;
+    /** @type {HTMLElement} */
+    end;
+};
+
+class Portal {
+    /** @type {number} x coordinate of center. right is + */
+    x;
+    /** @type {number} y coordinate of center. bottom is + */
+    y;
+    /** @type {number} z coordinate of center. always - */
+    distance;
+    /** @type {number} */
+    width;
+    /** @type {number} */
+    height;
+    /** @type {number} length or depth */
+    length;
+    /** @type {number} px/ms */
+    speed;
+    /** @type {Walls} */
+    walls;
+    /** @type {HTMLElement} */
+    root;
+    /** @type {onPortalEnter} */
+    onPortalEnter;
+
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} distance 
+     * @param {number} width 
+     * @param {number} height 
+     * @param {number} length 
+     * @param {number} speed 
+     * @param {onPortalEnter}
+     */
+    constructor(x, y, distance, width, height, length, speed, onPortalEnter) {
+        if (typeof(x) !== 'number') x = CONFIG.portalDefaults.x;
+        if (typeof(y) !== 'number') y = CONFIG.portalDefaults.y;
+        if (typeof(distance) !== 'number') distance = CONFIG.portalDefaults.distance;
+        if (typeof(width) !== 'number') width = CONFIG.portalDefaults.width;
+        if (typeof(height) !== 'number') height = CONFIG.defaults.height;
+        if (typeof(length) !== 'number') length = CONFIG.defaults.length;
+        if (typeof(speed) !== 'number') speed = CONFIG.defaults.speed;
+        if (typeof(onPortalEnter) !== 'function') onPortalEnter = (p) => { };
+
+        this.x = x;
+        this.y = y;
+        this.distance = distance;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.speed = speed;
+        this.onPortalEnter = onPortalEnter;
+
+        this.root = document.createElement('div');
+        this.root.classList.add('tunnel');
+        this.root.style.width = this.width + 'px';
+        this.root.style.height = this.height + 'px';
+        this.drawWalls();
+        this.redraw();
+        container.appendChild(this.root);
+    }
+
+    /**
+     * changes x, y, z
+     */
+    redraw() {
+        const realX = this.x - this.width/2;
+        const realY = this.y - this.height/2;
+        const realZ = this.distance;
+        this.root.style.top = realX + 'px';
+        this.root.style.left = realY + 'px';
+        this.root.style.transform = `translateZ(${realZ}px)`;
+    }
+
+    /**
+     * 
+     * @param {number} ms 
+     */
+    tick(ms) {
+
+    }
+
+    drawWalls() {
+        const leftWall = document.createElement('div');
+        leftWall.classList.add('left-wall');
+        //here etc
     }
 }
