@@ -61,8 +61,8 @@ body{
     transform-origin: left center;
     top: 0px;
     left: 0px;
-    width: 330.333vw;
-    height: 33.333vh;
+    /* width: 330.333vw;
+    height: 33.333vh; */
     background-color: red;
     transform: rotateY(90deg);
 }
@@ -71,9 +71,9 @@ body{
     position: absolute;
     transform-origin: left center;
     top: 0px;
-    left: 33.333vw;
+    /* left: 33.333vw;
     width: 330.333vw;
-    height: 33.333vh;
+    height: 33.333vh; */
     background-color: green;
     transform: rotateY(90deg);
 }
@@ -82,18 +82,18 @@ body{
     transform-origin: top center;
     top: 0px;
     left: 0px;
-    width: 33.333vw;
-    height: 330.333vw;
+    /* width: 33.333vw;
+    height: 330.333vw; */
     background-color: blue;
     transform: rotateX(-90deg);
 }
 .portal > .bottom-wall {
     position: absolute;
     transform-origin: top center;
-    top: 33.333vh;
+    /* top: 33.333vh; */
     left: 0px;
-    width: 33.333vw;
-    height: 330.333vw;
+    /* width: 33.333vw;
+    height: 330.333vw; */
     background-color: yellow;
     transform: rotateX(-90deg);
 }
@@ -102,8 +102,8 @@ body{
     transform-origin: top center;
     top: 0px;
     left: 0px;
-    width: 33.333vw;
-    height: 33.333vh;
+    /* width: 33.333vw;
+    height: 33.333vh; */
     background-color: white;
-    transform: translateZ(-330.333vw);
+    /* transform: translateZ(-330.333vw); */
 }

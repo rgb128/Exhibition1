@@ -23,7 +23,7 @@ class Configurations {
     consts = {
         perspective: 1000,
         container: document.getElementById('screen'),
-        movingDelta = 5
+        movingDelta: 5
     };
     screen = {
         width: document.documentElement.clientWidth,
@@ -34,12 +34,31 @@ class Configurations {
         y: this.defaults.y,
     }
 }
+class ScreenData {
+    x = CONFIG.defaults.x;
+    y = CONFIG.defaults.y;
+};
+class Walls {
+    /** @type {HTMLElement} */
+    left;
+    /** @type {HTMLElement} */
+    right;
+    /** @type {HTMLElement} */
+    top;
+    /** @type {HTMLElement} */
+    bottom;
+    /** @type {HTMLElement} */
+    end;
+};
 
 function updateConfig() {
-    container.style.perspective = CONFIG.consts.perspective + 'px';
     CONFIG = new Configurations();
+    container.style.perspective = CONFIG.consts.perspective + 'px';
     screen.data = new ScreenData();
 }
+updateConfig();
+
+
 window.addEventListener('resize', (e) => {
     updateConfig();
 });
@@ -131,28 +150,34 @@ let millisFromLastCreation = undefined;
 
 // screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
 
-// window.onkeydown = (e) => {
-//     const code = e.code;
-//     if (code === 'ArrowUp' || code === 'KeyW') {
-//         screen.data.y += movingDelta;
-//         screen.data.rotateX -= angleDelta;
-//     } else if (code === 'ArrowDown' || code === 'KeyS') {
-//         screen.data.y -= movingDelta;
-//         screen.data.rotateX += angleDelta;
-//     } else if (code === 'ArrowRight' || code === 'KeyD') {
-//         screen.data.x -= movingDelta;
-//         screen.data.rotateY -= angleDelta;
-//     } else if (code === 'ArrowLeft' || code === 'KeyA') {
-//         screen.data.x += movingDelta;
-//         screen.data.rotateY += angleDelta;
-//     }
+window.onkeydown = (e) => {
+    const code = e.code;
+    if (code === 'ArrowUp' || code === 'KeyW') {
+        screen.data.y += CONFIG.consts.movingDelta;
+        // screen.data.y += CONFIG.consts.movingDelta;
+    } else if (code === 'ArrowDown' || code === 'KeyS') {
+        screen.data.y -= CONFIG.consts.movingDelta;
+        // screen.data.y -= CONFIG.consts.movingDelta;
+    } else if (code === 'ArrowRight' || code === 'KeyD') {
+        screen.data.x -= CONFIG.consts.movingDelta;
+        // screen.data.x -= CONFIG.consts.movingDelta;
+    } else if (code === 'ArrowLeft' || code === 'KeyA') {
+        screen.data.x += CONFIG.consts.movingDelta;
+        // screen.data.x += CONFIG.consts.movingDelta;
+    }
 
-//     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
+    screen.style.left = screen.data.x + 'px';
+    screen.style.top = screen.data.y + 'px';
+    // console.log(screen.data);
 
-//     clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
-
-//     // console.log(screen.data);
-// }
+    const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+    for (const portal of portals) {
+        /** @type {Portal} */
+        const context = portal.context;
+        context.clipPath();
+        // portal.context.clipPath();
+    }
+}
 // clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
 
 
@@ -270,22 +295,6 @@ function clipPathOnPortal(walls, distance, x, y, width, height, length) {
 }
 
 
-class ScreenData {
-    x = CONFIG.defaults.x;
-    y = CONFIG.defaults.y;
-};
-class Walls {
-    /** @type {HTMLElement} */
-    left;
-    /** @type {HTMLElement} */
-    right;
-    /** @type {HTMLElement} */
-    top;
-    /** @type {HTMLElement} */
-    bottom;
-    /** @type {HTMLElement} */
-    end;
-};
 
 class Portal {
     /** @type {number} x coordinate of center. right is + */
@@ -311,14 +320,14 @@ class Portal {
 
     /**
      * 
-     * @param {number} x 
-     * @param {number} y 
+     * @param {number} x center depenting on center of POV
+     * @param {number} y center depenting on center of POV
      * @param {number} distance 
      * @param {number} width 
      * @param {number} height 
      * @param {number} length 
      * @param {number} speed 
-     * @param {onPortalEnter}
+     * @param {onPortalEnter|undefined}
      */
     constructor(x, y, distance, width, height, length, speed, onPortalEnter) {
         if (typeof(x) !== 'number') x = CONFIG.portalDefaults.x;
@@ -340,24 +349,26 @@ class Portal {
         this.onPortalEnter = onPortalEnter;
 
         this.root = document.createElement('div');
-        this.root.classList.add('tunnel');
+        this.root.context = this;
+        this.root.classList.add('portal');
         this.root.style.width = this.width + 'px';
         this.root.style.height = this.height + 'px';
         this.drawWalls();
         this.redraw();
-        container.appendChild(this.root);
+        screen.appendChild(this.root);
     }
 
     /**
      * changes x, y, z
      */
     redraw() {
-        const realX = this.x - this.width/2;
-        const realY = this.y - this.height/2;
+        const realX = CONFIG.screen.width/2 + this.x - this.width/2;
+        const realY = CONFIG.screen.height/2 + this.y - this.height/2;
         const realZ = this.distance;
-        this.root.style.top = realX + 'px';
-        this.root.style.left = realY + 'px';
+        this.root.style.top = realY + 'px';
+        this.root.style.left = realX + 'px';
         this.root.style.transform = `translateZ(${realZ}px)`;
+        this.onresize();
     }
 
     /**
@@ -371,6 +382,167 @@ class Portal {
     drawWalls() {
         const leftWall = document.createElement('div');
         leftWall.classList.add('left-wall');
-        //here etc
+        const rightWall = document.createElement('div');
+        rightWall.classList.add('right-wall');
+        const topWall = document.createElement('div');
+        topWall.classList.add('top-wall');
+        const bottomWall = document.createElement('div');
+        bottomWall.classList.add('bottom-wall');
+        const endWall = document.createElement('div');
+        endWall.classList.add('end');
+        
+        const walls = new Walls();
+        walls.left = leftWall;
+        walls.right = rightWall;
+        walls.top = topWall;
+        walls.bottom = bottomWall;
+        walls.end = endWall;
+        
+        this.walls = walls;
+        this.onresize();
+
+        this.root.appendChild(leftWall);
+        this.root.appendChild(rightWall);
+        this.root.appendChild(topWall);
+        this.root.appendChild(bottomWall);
+        this.root.appendChild(endWall);
+    }
+
+    onresize() {
+        this.walls.left.style.width = this.length + 'px';
+        this.walls.left.style.height = this.height + 'px';
+
+        this.walls.right.style.left = this.width + 'px';
+        this.walls.right.style.width = this.length + 'px';
+        this.walls.right.style.height = this.height + 'px';
+        
+        this.walls.top.style.width = this.width + 'px';
+        this.walls.top.style.height = this.length + 'px';
+        
+        this.walls.bottom.style.top = this.height + 'px';
+        this.walls.bottom.style.width = this.width + 'px';
+        this.walls.bottom.style.height = this.length + 'px';
+
+        this.walls.end.style.width = this.width + 'px';
+        this.walls.end.style.height = this.height + 'px';
+        this.walls.end.style.transform = `translateZ(-${this.length}px)`;
+
+        this.clipPath();
+    }
+
+    clipPath() {
+        const walls = this.walls;
+        const distance = -1 * this.distance + CONFIG.consts.perspective;
+        /** @type {number} */
+        const x = screen.data.x + this.x;
+        /** @type {number} */
+        const y = screen.data.y + this.y;
+        const width = this.width;
+        const height = this.height;
+        const length = this.length;
+
+        if (walls.left) {
+            if (x > width/2) { // invisible
+                walls.left.style.width = '0px';
+            } else if ( x < -(width * distance / length + width/2)) { // length must be cropped
+                const newLength = width * distance / (-x - width/2);
+                walls.left.style.width = newLength + 'px';
+            } else { // full length is visible
+                walls.left.style.width = length + 'px';
+            }
+    
+            if (-y > height/2) { // top side is visible
+                const topLength = height * distance / (-y - height/2);
+                walls.left.style.clipPath = `polygon(0px 0px, ${topLength}px 0px, 0px ${height}px`;
+            } else if (y > height/2) { // bottom side is visible
+                const bottomLength = height * distance / (y - height/2);
+                walls.left.style.clipPath = `polygon(0px 0px, ${bottomLength}px ${height}px, 0px ${height}px`;
+            } else { // all sides are visible
+                walls.left.style.clipPath = `none`;
+            }
+        }
+    
+        if (walls.right) {
+            if (-x > width/2) { // invisible
+                walls.right.style.width = '0px';
+            } else if ( x > (width * distance / length + width/2)) { // length must be cropped
+                const newLength = width * distance / (x - width/2);
+                walls.right.style.width = newLength + 'px';
+            } else { // full length is visible
+                walls.right.style.width = length + 'px';
+            }
+        
+            if (-y > height/2) { // top side is visible
+                const topLength = height * distance / (-y - height/2);
+                walls.right.style.clipPath = `polygon(0px 0px, ${topLength}px 0px, 0px ${height}px`;
+            } else if (y > height/2) { // bottom side is visible
+                const bottomLength = height * distance / (y - height/2);
+                walls.right.style.clipPath = `polygon(0px 0px, ${bottomLength}px ${height}px, 0px ${height}px`;
+            } else { // all sides are visible
+                walls.right.style.clipPath = `none`;
+            }
+        }
+    
+    
+        if (walls.top) {
+            if (y > height/2) { // invisible
+                walls.top.style.height = '0px';
+            } else if ( y < -(height * distance / length + height/2)) { // length must be cropped
+                const newLength = height * distance / (-y - height/2);
+                walls.top.style.height = newLength + 'px';
+            } else { // full length is visible
+                walls.top.style.height = length + 'px';
+            }
+    
+            if (x > width/2) { // right side is visible
+                const rightLength = width * distance / (x - width/2);
+                walls.top.style.clipPath = `polygon(0px 0px, ${width}px ${rightLength}px, ${width}px 0px)`;
+            } else if (-x > width/2) { // left side is visible
+                const leftLength = width * distance / (-x - width/2);
+                walls.top.style.clipPath = `polygon(${width}px 0px, 0px ${leftLength}px, 0px 0px)`;
+            } else { // all sides are visible
+                walls.top.style.clipPath = `none`;
+            }
+        }
+        
+        if (walls.bottom) {
+            if (-y > height/2) { // invisible
+                walls.bottom.style.height = '0px';
+            } else if (y > (height * distance / length + height/2)) { // length must be cropped
+                const newLength = height * distance / (y - height/2);
+                walls.bottom.style.height = newLength + 'px';
+            } else { // full length is visible
+                walls.bottom.style.height = length + 'px';
+            }
+    
+            if (x > width/2) { // right side is visible
+                const rightLength = width * distance / (x - width/2);
+                walls.bottom.style.clipPath = `polygon(0px 0px, ${width}px ${rightLength}px, ${width}px 0px)`;
+            } else if (-x > width/2) { // left side is visible
+                const leftLength = width * distance / (-x - width/2);
+                walls.bottom.style.clipPath = `polygon(${width}px 0px, 0px ${leftLength}px, 0px 0px)`;
+            } else { // all sides are visible
+                walls.bottom.style.clipPath = `none`;
+            }
+        }
+        
+        if (walls.end) {
+            let cropLeft = length * (-x - width/2) / distance;
+            cropLeft = width - cropLeft;
+            cropLeft = cropLeft < 0 ? 0 : cropLeft > width ? width : cropLeft;
+            let cropRight = length * (x - width/2) / distance;
+            cropRight = cropRight < 0 ? 0 : cropRight > width ? width : cropRight;
+    
+            let cropTop = length * (-y - height/2) / distance;
+            cropTop = height - cropTop;
+            cropTop = cropTop < 0 ? 0 : cropTop > height ? height : cropTop;
+            let cropBottom = length * (y - height/2) / distance;
+            cropBottom = cropBottom < 0 ? 0 : cropBottom > height ? height : cropBottom;
+    
+            walls.end.style.clipPath = `polygon(${cropLeft}px ${cropTop}px, ${cropRight}px ${cropTop}px, ${cropRight}px ${cropBottom}px, ${cropLeft}px ${cropBottom}px)`;
+        }
     }
 }
+
+
+new Portal(0, 0, 0, 100, 100, 1000, 0);
