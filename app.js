@@ -23,7 +23,8 @@ class Configurations {
     consts = {
         perspective: 1000,
         container: document.getElementById('screen'),
-        movingDelta: 5
+        movingDelta: 5,
+        creationMs: 1000
     };
     screen = {
         width: document.documentElement.clientWidth,
@@ -63,9 +64,6 @@ window.addEventListener('resize', (e) => {
     updateConfig();
 });
 
-// function move(x, y) {
-
-// }
 
 /**
  * Ehen user enters portal
@@ -75,100 +73,17 @@ window.addEventListener('resize', (e) => {
  */
 
 
-
-// const creationMs = 1000; //px
-// const creationDistance = -10000; //px
-// const speed = 1; // px/ms
-// const deletingDistance = 5000; //px
-// const movingDelta = 5; //px
-// const angleDelta = 0; // deg (.2)
-// const perspective = 1000; //px
-// const portalBox = {
-//     x: document.documentElement.clientWidth / 3,
-//     y: document.documentElement.clientHeight / 3,
-//     width: document.documentElement.clientWidth / 3,
-//     height: document.documentElement.clientHeight / 3
-// }
-// const border = 0; //px
-
-let previousTime = performance.now();
-let millisFromLastCreation = undefined;
-
-// const tunnelWalls = new Walls;
-// tunnelWalls.left = document.querySelector('.left-wall');
-// tunnelWalls.right = document.querySelector('.right-wall');
-// tunnelWalls.top = document.querySelector('.top-wall');
-// tunnelWalls.bottom = document.querySelector('.bottom-wall');
-// tunnelWalls.end = document.querySelector('.end');
-
-/**
- * Main function for all animations
- * @param {number} time 
- */
-// const animate = function (time) {
-//     if (typeof time !== 'number') time = 0;
-
-//     const delta = time - previousTime;
-//     previousTime = time;
-    
-//     if (millisFromLastCreation === undefined) millisFromLastCreation = creationMs;
-//     // Create new portion(s) of clocks
-//     while (millisFromLastCreation >= creationMs) {
-//         millisFromLastCreation -= creationMs;
-//         const portal = document.createElement('div');
-//         portal.classList.add('portal');
-//         portal.distance = creationDistance;
-//         portal.style.transform = `translateZ(${creationDistance}px)`;
-//         portal.style.top = portalBox.y - border + 'px';
-//         portal.style.left = portalBox.x - border + 'px';
-//         portal.style.width = portalBox.width + 'px';
-//         portal.style.height = portalBox.height + 'px';
-//         // document.getElementById('screen').appendChild(portal);
-//     }
-//     millisFromLastCreation += delta;
-
-//     const pixelDelta = speed * delta;
-//     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
-//     for (const portal of portals) {
-//         portal.distance += pixelDelta;
-//         portal.style.transform = `translateZ(${portal.distance}px)`;
-//         if (portal.distance >= perspective) {
-//             if (Math.abs(screen.data.x) <= (portalBox.width / 2) && Math.abs(screen.data.y) <= (portalBox.height / 2)) {
-//                 // Check getting into portal
-//                 console.log('portal got');
-//             }
-//             portal.remove();
-//         }
-//     }
-//     screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
-
-//     // requestAnimationFrame(animate);
-// }
-
-// animate();
-
-
-// screen.style.transform = `translate3d(${screen.data.x}px, ${screen.data.y}px, 0px) rotateX(${screen.data.rotateX}deg) rotateY(${screen.data.rotateY}deg)`;
-
 window.onkeydown = (e) => {
     const code = e.code;
     if (code === 'ArrowUp' || code === 'KeyW') {
         screen.data.y += CONFIG.consts.movingDelta;
-        // screen.data.y += CONFIG.consts.movingDelta;
     } else if (code === 'ArrowDown' || code === 'KeyS') {
         screen.data.y -= CONFIG.consts.movingDelta;
-        // screen.data.y -= CONFIG.consts.movingDelta;
     } else if (code === 'ArrowRight' || code === 'KeyD') {
         screen.data.x -= CONFIG.consts.movingDelta;
-        // screen.data.x -= CONFIG.consts.movingDelta;
     } else if (code === 'ArrowLeft' || code === 'KeyA') {
         screen.data.x += CONFIG.consts.movingDelta;
-        // screen.data.x += CONFIG.consts.movingDelta;
     }
-
-    screen.style.left = screen.data.x + 'px';
-    screen.style.top = screen.data.y + 'px';
-    // console.log(screen.data);
 
     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
     for (const portal of portals) {
@@ -178,7 +93,6 @@ window.onkeydown = (e) => {
         // portal.context.clipPath();
     }
 }
-// clipPathOnPortal(tunnelWalls, perspective, screen.data.x, screen.data.y, portalBox.width, portalBox.height, document.documentElement.clientWidth / 100 * 330.333);
 
 
 /**
@@ -376,7 +290,17 @@ class Portal {
      * @param {number} ms 
      */
     tick(ms) {
-
+        const pixelDelta = this.speed * ms;
+        this.distance += pixelDelta;
+        this.root.style.transform = `translateZ(${this.distance}px)`;
+        this.clipPath();
+        if (this.distance >= CONFIG.consts.perspective) {
+            // todo: NOT IN THIS WAY!!!
+            // this.onPortalEnter(this);
+        }
+        if (this.distance > CONFIG.consts.perspective + this.length) {
+            this.root.remove();
+        }
     }
 
     drawWalls() {
@@ -440,6 +364,13 @@ class Portal {
         const width = this.width;
         const height = this.height;
         const length = this.length;
+
+        /* @param {number} distance distance from POV to the plane with etrance to tunnel. Must be +
+        @param {number} x x coordinate of center, if 0,0 is POV. + is right
+        @param {number} y y coordinate of center, if 0,0 is POV. + is bottom
+        @param {number} width width of tunnel
+        @param {number} height leight if tunnel
+        @param {number} length length or depth of tunnel. always + */
 
         if (walls.left) {
             if (x > width/2) { // invisible
@@ -545,4 +476,56 @@ class Portal {
 }
 
 
-new Portal(0, 0, 0, 100, 100, 1000, 0);
+
+
+let previousTime = performance.now();
+let millisFromLastCreation = undefined;
+
+/**
+ * Main function for all animations
+ * @param {number} time 
+ */
+const animate = function (time) {
+    if (typeof time !== 'number') time = 0;
+
+    const delta = time - previousTime;
+    previousTime = time;
+    
+    if (millisFromLastCreation === undefined) millisFromLastCreation = CONFIG.consts.creationMs;
+    while (millisFromLastCreation >= CONFIG.consts.creationMs) {
+        millisFromLastCreation -= CONFIG.consts.creationMs;
+        
+        new Portal(
+            map(Math.random(), 0, 1, -200, 200), 
+            map(Math.random(), 0, 1, -200, 200), 
+            -5000, 
+            100, 
+            100, 
+            10000, 
+            1,
+            prt => {console.log(prt)});
+    }
+    millisFromLastCreation += delta;
+
+    screen.style.left = screen.data.x + 'px';
+    screen.style.top = screen.data.y + 'px';
+    const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+    for (const portal of portals) {
+        portal.context.tick(delta);
+    }
+    
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+
+
+
+function map(num, frombottom, fromtop, tobottom, totop) {
+    let a = num - frombottom;
+    a *= (totop-tobottom)/(fromtop-frombottom);
+    a += tobottom;
+    return a;
+}
