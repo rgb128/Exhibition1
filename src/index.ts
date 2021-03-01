@@ -4,21 +4,31 @@ import { map } from './map';
 
 window.onkeydown = (e: KeyboardEvent) => {
     const code = e.code;
+
+    let newX = CONFIG.screen.data.x;
+    let newY = CONFIG.screen.data.y;
+
     if (code === 'ArrowUp' || code === 'KeyW') {
-        CONFIG.screen.data.y += CONFIG.consts.movingDelta;
+        newY += CONFIG.consts.movingDelta;
     } else if (code === 'ArrowDown' || code === 'KeyS') {
-        CONFIG.screen.data.y -= CONFIG.consts.movingDelta;
+        newY -= CONFIG.consts.movingDelta;
     } else if (code === 'ArrowRight' || code === 'KeyD') {
-        CONFIG.screen.data.x -= CONFIG.consts.movingDelta;
+        newX -= CONFIG.consts.movingDelta;
     } else if (code === 'ArrowLeft' || code === 'KeyA') {
-        CONFIG.screen.data.x += CONFIG.consts.movingDelta;
+        newX += CONFIG.consts.movingDelta;
     }
+
+    if (CONFIG.screen.data.portalIn) {
+        const portalIn = CONFIG.screen.data.portalIn as Portal;
+        if (!portalIn.isUserInPortal(newX, newY)) return;
+    }
+    CONFIG.screen.data.x = newX;
+    CONFIG.screen.data.y = newY;
 
     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
     for (const portal of portals) {
         const context = (portal as PortalHTML).context;
         context.clipPath();
-        // portal.context.clipPath();
     }
 }
 
@@ -56,8 +66,6 @@ function animate (time?: number): void {
         const portalIn = CONFIG.screen.data.portalIn as Portal;
         portalIn.tick(delta);
     } else {
-        // CONFIG.consts.container.style.left = CONFIG.screen.data.x + 'px';
-        // CONFIG.consts.container.style.top = CONFIG.screen.data.y + 'px';
         const portals = Array.from(document.querySelectorAll('#screen > .portal'));
         for (const portal of portals) {
             const context = (portal as PortalHTML).context;

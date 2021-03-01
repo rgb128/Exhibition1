@@ -1,6 +1,7 @@
 import { Walls } from './Walls';
 import { CONFIG } from './Configurations';
-
+import { map } from './map';
+ 
 export class PortalHTML extends HTMLElement {
     public context?: Portal;
 }
@@ -85,35 +86,25 @@ export class Portal {
         const pixelDelta = this.speed * ms;
         this.distance += pixelDelta;
         this.root.style.transform = `translateZ(${this.distance}px)`;
+        this.clipPath();
+        
+        const minDistance = CONFIG.consts.perspective;
+        const maxDistance = this.length + CONFIG.consts.perspective;
 
         if (CONFIG.screen.data.portalIn === this) {
             console.log('this portal');
-            // const pixelDelta = this.speed * ms;
-            // this.distance += pixelDelta;
-            // this.root.style.transform = `translateZ(${this.distance}px)`;
-            // this.clipPath();
-            //change opacity of end wall
-            if (this.distance >= this.length + CONFIG.consts.perspective) {
+            const endWallOpacity = map(this.distance, minDistance, maxDistance, 1, 0);
+            this.walls.end.style.opacity = '' + endWallOpacity;
+
+            if (this.distance >= maxDistance) {
                 CONFIG.screen.data.portalIn = undefined;
                 this.root.remove();
                 return;
             }
         } else {
-            this.clipPath();
-            // const pixelDelta = this.speed * ms;
-            // this.distance += pixelDelta;
-            // this.root.style.transform = `translateZ(${this.distance}px)`;
-            // this.clipPath();
             
-            if (this.distance >= CONFIG.consts.perspective) {
-
-                const leftX = this.x - this.width/2;
-                const rightX = this.x + this.width/2;
-                const topY = this.y - this.height/2;
-                const bottomY = this.y + this.height/2;
-                const userX = -CONFIG.screen.data.x;
-                const userY = -CONFIG.screen.data.y;
-                const portalEntered = userX > leftX && userX < rightX && userY > topY && userY < bottomY;
+            if (this.distance >= minDistance) {
+                const portalEntered = this.isUserInPortal(CONFIG.screen.data.x, CONFIG.screen.data.y);
 
                 if (portalEntered) {
                     // We're in this tunnel
@@ -179,7 +170,7 @@ export class Portal {
         this.clipPath();
     }
 
-    public  clipPath() {
+    public clipPath() {
         const walls = this.walls;
         const distance = -1 * this.distance + CONFIG.consts.perspective;
         const x = CONFIG.screen.data.x + this.x;
@@ -295,5 +286,22 @@ export class Portal {
     
             walls.end.style.clipPath = `polygon(${cropLeft}px ${cropTop}px, ${cropRight}px ${cropTop}px, ${cropRight}px ${cropBottom}px, ${cropLeft}px ${cropBottom}px)`;
         }
+    }
+
+    /**
+     * 
+     * @param userX x of POV div (no need to *= -1)
+     * @param userY y of POV div (no need to *= -1)
+     */
+    public isUserInPortal(userX: number, userY: number): boolean {
+        const realX = -userX;
+        const realY = -userY;
+        const leftX = this.x - this.width/2;
+        const rightX = this.x + this.width/2;
+        const topY = this.y - this.height/2;
+        const bottomY = this.y + this.height/2;
+        const result = realX > leftX && realX < rightX && realY > topY && realY < bottomY;
+
+        return result;
     }
 }

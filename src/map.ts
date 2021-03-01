@@ -3,7 +3,7 @@ export function map(
     frombottom: number,
     fromtop: number,
     tobottom: number,
-    totop: number) {
+    totop: number): number {
 
     let a = num - frombottom;
     a *= (totop-tobottom)/(fromtop-frombottom);
