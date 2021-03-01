@@ -1,3 +1,90 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    transform-style: preserve-3d;
+    border: none;
+}
+
 body{
-    background-color: black;
+    background-color: #000;
+}
+
+#container{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    perspective: 1000px;
+    perspective-origin: center;
+    overflow: hidden;
+}
+
+@keyframes anim1{
+    0%{
+        transform: translate3d(0px, 0px, -100vw);
+    }
+    50% {
+        transform: translate3d(0px, 0px, 0vw);
+    }
+    100% {
+        transform: translate3d(0px, 0px, -100vw);
+    }
+}
+
+
+#screen {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    border: none;
+    transform: translate3d(0vw, 0vw, 0vw);
+    transform-origin: center;
+}
+.portal {
+    position: absolute;
+    border: none;
+    transform-origin: center;
+}
+
+.portal > .left-wall {
+    position: absolute;
+    transform-origin: left center;
+    top: 0px;
+    left: 0px;
+    background-color: red;
+    transform: rotateY(90deg);
+}
+
+.portal > .right-wall {
+    position: absolute;
+    transform-origin: left center;
+    top: 0px;
+    background-color: green;
+    transform: rotateY(90deg);
+}
+.portal > .top-wall {
+    position: absolute;
+    transform-origin: top center;
+    top: 0px;
+    left: 0px;
+    background-color: blue;
+    transform: rotateX(-90deg);
+}
+.portal > .bottom-wall {
+    position: absolute;
+    transform-origin: top center;
+    left: 0px;
+    background-color: yellow;
+    transform: rotateX(-90deg);
+}
+.portal > .end {
+    position: absolute;
+    transform-origin: top center;
+    top: 0px;
+    left: 0px;
+    background-color: white;
 }
