@@ -22,7 +22,9 @@ class Configurations {
         width: document.documentElement.clientWidth,
         height: document.documentElement.clientHeight,
         data: {
+            /** x for div shifting. To get real x POV position, *= -1 */
             x: this.defaults.x,
+            /** x for div shifting. To get real x POV position, *= -1 */
             y: this.defaults.y,
             /** @type {undefined|Portal} */
             portalIn: undefined

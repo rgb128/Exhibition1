@@ -36,9 +36,9 @@ function animate (time?: number): void {
     previousTime = time;
     
     if (millisFromLastCreation === undefined) millisFromLastCreation = CONFIG.consts.creationMs;
-    while (millisFromLastCreation >= CONFIG.consts.creationMs) {
-        millisFromLastCreation -= CONFIG.consts.creationMs;
-        
+    if (millisFromLastCreation >= CONFIG.consts.creationMs && !CONFIG.screen.data.portalIn) {
+        millisFromLastCreation = 0;
+        // x, y depending on POV (CONFIG.screen.data.x, y)
         new Portal(
             map(Math.random(), 0, 1, -200, 200), 
             map(Math.random(), 0, 1, -200, 200), 
@@ -52,13 +52,20 @@ function animate (time?: number): void {
 
     CONFIG.consts.container.style.left = CONFIG.screen.data.x + 'px';
     CONFIG.consts.container.style.top = CONFIG.screen.data.y + 'px';
-    const portals = Array.from(document.querySelectorAll('#screen > .portal'));
-    for (const portal of portals) {
-        const context = (portal as PortalHTML).context;
-        context.tick(delta);
+    if (CONFIG.screen.data.portalIn) {
+        const portalIn = CONFIG.screen.data.portalIn as Portal;
+        portalIn.tick(delta);
+    } else {
+        // CONFIG.consts.container.style.left = CONFIG.screen.data.x + 'px';
+        // CONFIG.consts.container.style.top = CONFIG.screen.data.y + 'px';
+        const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+        for (const portal of portals) {
+            const context = (portal as PortalHTML).context;
+            context.tick(delta);
+        }
     }
-    
 
+    // document.title = `x: ${Math.round(CONFIG.screen.data.x)}, y: ${Math.round(CONFIG.screen.data.y)}`;
     requestAnimationFrame(animate);
 }
 

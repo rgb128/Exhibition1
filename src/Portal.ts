@@ -6,9 +6,9 @@ export class PortalHTML extends HTMLElement {
 }
 
 export class Portal {
-    /** x coordinate of center. right is + */
+    /** x coordinate of center depending on screen center. right is + */
     public readonly x: number;
-    /** y coordinate of center. bottom is + */
+    /** y coordinate of center depending on screen center. bottom is + */
     public readonly y: number;
     /** z coordinate of center. always - */
     public distance: number;
@@ -23,8 +23,8 @@ export class Portal {
 
     /**
      * 
-     * @param x center depenting on center of POV
-     * @param y center depenting on center of POV
+     * @param x center depenting on center of screen
+     * @param y center depenting on center of screen
      * @param distance 
      * @param width 
      * @param height 
@@ -82,44 +82,51 @@ export class Portal {
     }
 
     public tick(ms: number): void {
+        const pixelDelta = this.speed * ms;
+        this.distance += pixelDelta;
+        this.root.style.transform = `translateZ(${this.distance}px)`;
+
         if (CONFIG.screen.data.portalIn === this) {
-            const pixelDelta = this.speed * ms;
-            this.distance += pixelDelta;
-            this.root.style.transform = `translateZ(${this.distance}px)`;
-            this.clipPath();
-            //end make different
-            if (this.distance >= CONFIG.consts.perspective + this.length) {
+            console.log('this portal');
+            // const pixelDelta = this.speed * ms;
+            // this.distance += pixelDelta;
+            // this.root.style.transform = `translateZ(${this.distance}px)`;
+            // this.clipPath();
+            //change opacity of end wall
+            if (this.distance >= this.length + CONFIG.consts.perspective) {
+                CONFIG.screen.data.portalIn = undefined;
                 this.root.remove();
                 return;
             }
-        } else if (CONFIG.screen.data.portalIn) {
-            // Do nothing.
         } else {
-            const pixelDelta = this.speed * ms;
-            this.distance += pixelDelta;
-            this.root.style.transform = `translateZ(${this.distance}px)`;
             this.clipPath();
+            // const pixelDelta = this.speed * ms;
+            // this.distance += pixelDelta;
+            // this.root.style.transform = `translateZ(${this.distance}px)`;
+            // this.clipPath();
             
             if (this.distance >= CONFIG.consts.perspective) {
-                // todo: NOT IN THIS WAY!!!
-                // this.onPortalEnter(this);
-                console.log(`X: ${this.x} ${CONFIG.screen.data.x} ${this.x + this.width}`);
-                console.log(`Y: ${this.y} ${CONFIG.screen.data.y} ${this.y + this.height}`);
-                if (CONFIG.screen.data.x > this.x && CONFIG.screen.data.x < this.x + this.width &&
-                    CONFIG.screen.data.y > this.y && CONFIG.screen.data.y < this.y + this.height) {
+
+                const leftX = this.x - this.width/2;
+                const rightX = this.x + this.width/2;
+                const topY = this.y - this.height/2;
+                const bottomY = this.y + this.height/2;
+                const userX = -CONFIG.screen.data.x;
+                const userY = -CONFIG.screen.data.y;
+                const portalEntered = userX > leftX && userX < rightX && userY > topY && userY < bottomY;
+
+                if (portalEntered) {
                     // We're in this tunnel
                     CONFIG.screen.data.portalIn = this;
+                    console.log('entered');
                     return;
                 } else {
+                    console.log('deleted');
                     this.root.remove();
                     return;
                 }
             }
         }
-        
-        // if (this.distance > CONFIG.consts.perspective) {
-        //     this.root.remove();
-        // }
     }
 
     protected drawWalls(): Walls {
@@ -150,7 +157,7 @@ export class Portal {
         return walls;
     }
 
-    onresize() {
+    protected onresize() {
         this.walls.left.style.width = this.length + 'px';
         this.walls.left.style.height = this.height + 'px';
 
@@ -172,7 +179,7 @@ export class Portal {
         this.clipPath();
     }
 
-    clipPath() {
+    public  clipPath() {
         const walls = this.walls;
         const distance = -1 * this.distance + CONFIG.consts.perspective;
         const x = CONFIG.screen.data.x + this.x;
