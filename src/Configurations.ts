@@ -1,4 +1,4 @@
-export class Configurations {
+class Configurations {
     portalDefaults = {
         speed: 1,
         z: 1000,
@@ -21,33 +21,27 @@ export class Configurations {
     screen = {
         width: document.documentElement.clientWidth,
         height: document.documentElement.clientHeight,
-        data: new ScreenData()
+        data: {
+            x: this.defaults.x,
+            y: this.defaults.y,
+            /** @type {undefined|Portal} */
+            portalIn: undefined
+        }
     };
     position = {
         x: this.defaults.x,
         y: this.defaults.y,
     }
 }
-
-export class ScreenData {
-    x = CONFIG.defaults.x;
-    y = CONFIG.defaults.y;
-    /** @type {undefined|Portal} */
-    portalIn: any = undefined;
-};
-
-
+export { CONFIG };
 
 
 let CONFIG: Configurations;
 
 
 const container = document.getElementById('container');
-export function updateConfig() {
+function updateConfig() {
     CONFIG = new Configurations();
     container.style.perspective = CONFIG.consts.perspective + 'px';
-    CONFIG.screen.data = new ScreenData();
-    console.log('hhhhhh');
 }
-
-export { CONFIG };
+updateConfig();

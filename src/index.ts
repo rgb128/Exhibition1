@@ -1,11 +1,6 @@
-import { CONFIG, updateConfig } from './Configurations';
+import { CONFIG } from './Configurations';
 import { PortalHTML, Portal } from './Portal';
 import { map } from './map';
-
-updateConfig();
-window.addEventListener('resize', (e) => {
-    updateConfig();
-});
 
 window.onkeydown = (e: KeyboardEvent) => {
     const code = e.code;
