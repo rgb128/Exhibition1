@@ -38,6 +38,8 @@ class Configurations {
 class ScreenData {
     x = CONFIG.defaults.x;
     y = CONFIG.defaults.y;
+    /** @type {undefined|Portal} */
+    portalIn = undefined;
 };
 class Walls {
     /** @type {HTMLElement} */
@@ -290,17 +292,44 @@ class Portal {
      * @param {number} ms 
      */
     tick(ms) {
-        const pixelDelta = this.speed * ms;
-        this.distance += pixelDelta;
-        this.root.style.transform = `translateZ(${this.distance}px)`;
-        this.clipPath();
-        if (this.distance >= CONFIG.consts.perspective) {
-            // todo: NOT IN THIS WAY!!!
-            // this.onPortalEnter(this);
+        if (screen.data.portalIn === this) {
+            const pixelDelta = this.speed * ms;
+            this.distance += pixelDelta;
+            this.root.style.transform = `translateZ(${this.distance}px)`;
+            this.clipPath();
+            //end make different
+            if (this.distance >= CONFIG.consts.perspective + this.length) {
+                this.root.remove();
+                return;
+            }
+        } else if (screen.data.portalIn) {
+            // Do nothing.
+        } else {
+            const pixelDelta = this.speed * ms;
+            this.distance += pixelDelta;
+            this.root.style.transform = `translateZ(${this.distance}px)`;
+            this.clipPath();
+            
+            if (this.distance >= CONFIG.consts.perspective) {
+                // todo: NOT IN THIS WAY!!!
+                // this.onPortalEnter(this);
+                console.log(`X: ${this.x} ${screen.data.x} ${this.x + this.width}`);
+                console.log(`Y: ${this.y} ${screen.data.y} ${this.y + this.height}`);
+                if (screen.data.x > this.x && screen.data.x < this.x + this.width &&
+                    screen.data.y > this.y && screen.data.y < this.y + this.height) {
+                    // We're in this tunnel
+                    screen.data.portalIn = this;
+                    return;
+                } else {
+                    this.root.remove();
+                    return;
+                }
+            }
         }
-        if (this.distance > CONFIG.consts.perspective + this.length) {
-            this.root.remove();
-        }
+        
+        // if (this.distance > CONFIG.consts.perspective) {
+        //     this.root.remove();
+        // }
     }
 
     drawWalls() {
@@ -511,7 +540,9 @@ const animate = function (time) {
     screen.style.top = screen.data.y + 'px';
     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
     for (const portal of portals) {
-        portal.context.tick(delta);
+        const context = portal.context;
+        /** @type {Portal} */
+        context.tick(delta);
     }
     
 
