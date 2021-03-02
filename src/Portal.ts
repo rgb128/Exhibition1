@@ -83,7 +83,7 @@ export class Portal {
         const maxDistance = this.length + CONFIG.consts.perspective;
 
         if (CONFIG.screen.data.portalIn === this) {
-            console.log('this portal');
+            // console.log('this portal');
             const endWallOpacity = map(this.distance, minDistance, maxDistance, 1, 0);
             this.walls.end.style.opacity = '' + endWallOpacity;
 
@@ -98,9 +98,8 @@ export class Portal {
                 const portalEntered = this.isUserInPortal(CONFIG.screen.data.x, CONFIG.screen.data.y);
 
                 if (portalEntered) {
-                    // We're in this tunnel
+                    // console.log('entered');
                     CONFIG.screen.data.portalIn = this;
-                    console.log('entered');
                     if (CONFIG.portalsMoveWhenYouAreInPortal) {
                         const portals = Array.from(document.querySelectorAll('#screen > .portal'));
                         for (const portal of portals) {
@@ -113,7 +112,7 @@ export class Portal {
                     }
                     return;
                 } else {
-                    console.log('deleted');
+                    // console.log('deleted');
                     this.root.remove();
                     return;
                 }
