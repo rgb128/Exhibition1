@@ -1,6 +1,7 @@
 import { Walls } from './Walls';
 import { CONFIG } from './Configurations';
 import { map } from './map';
+import { buildWalls } from './buildWalls';
  
 export class PortalHTML extends HTMLElement {
     public context?: Portal;
@@ -40,15 +41,6 @@ export class Portal {
         height: number, 
         length: number, 
         speed: number) {
-
-        // if (typeof(x) !== 'number') x = CONFIG.portalDefaults.x;
-        // if (typeof(y) !== 'number') y = CONFIG.portalDefaults.y;
-        // if (typeof(distance) !== 'number') distance = CONFIG.portalDefaults.distance;
-        // if (typeof(width) !== 'number') width = CONFIG.portalDefaults.width;
-        // if (typeof(height) !== 'number') height = CONFIG.defaults.height;
-        // if (typeof(length) !== 'number') length = CONFIG.defaults.length;
-        // if (typeof(speed) !== 'number') speed = CONFIG.defaults.speed;
-        // if (typeof(onPortalEnter) !== 'function') onPortalEnter = (p) => { };
 
         this.x = x;
         this.y = y;
@@ -120,30 +112,12 @@ export class Portal {
     }
 
     protected drawWalls(): Walls {
-        const leftWall = document.createElement('div');
-        leftWall.classList.add('left-wall');
-        const rightWall = document.createElement('div');
-        rightWall.classList.add('right-wall');
-        const topWall = document.createElement('div');
-        topWall.classList.add('top-wall');
-        const bottomWall = document.createElement('div');
-        bottomWall.classList.add('bottom-wall');
-        const endWall = document.createElement('div');
-        endWall.classList.add('end');
-        
-        const walls = new Walls();
-        walls.left = leftWall;
-        walls.right = rightWall;
-        walls.top = topWall;
-        walls.bottom = bottomWall;
-        walls.end = endWall;
-        
-
-        this.root.appendChild(leftWall);
-        this.root.appendChild(rightWall);
-        this.root.appendChild(topWall);
-        this.root.appendChild(bottomWall);
-        this.root.appendChild(endWall);
+        const walls = buildWalls(this.width, this.height, this.length);
+        this.root.appendChild(walls.left);
+        this.root.appendChild(walls.right);
+        this.root.appendChild(walls.top);
+        this.root.appendChild(walls.bottom);
+        this.root.appendChild(walls.end);
         return walls;
     }
 

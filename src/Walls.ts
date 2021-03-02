@@ -1,7 +1,9 @@
 export class Walls {
-    public left?: HTMLElement;
-    public right?: HTMLElement;
-    public top?: HTMLElement;
-    public bottom?: HTMLElement
-    public end?: HTMLElement;
+    public constructor(
+        public readonly left: HTMLElement,
+        public readonly right: HTMLElement,
+        public readonly top: HTMLElement,
+        public readonly bottom: HTMLElement,
+        public readonly end: HTMLElement
+    ) { }
 }
