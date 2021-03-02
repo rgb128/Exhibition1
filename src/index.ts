@@ -80,3 +80,12 @@ function animate (time?: number): void {
 }
 
 animate();
+
+// new Portal(
+//     0, 
+//     0, 
+//     CONFIG.consts.perspective, 
+//     CONFIG.portalDefaults.width, 
+//     CONFIG.portalDefaults.width, 
+//     CONFIG.portalDefaults.length, 
+//     CONFIG.portalDefaults.speed);

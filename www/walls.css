@@ -3,20 +3,27 @@
     transform-origin: left center;
     top: 0px;
     left: 0px;
-    /* background-color: red; */
     background-color: #eba99e;
     background-image: url("./img/wood-pattern.png");
+    background-size: 8%;
     transform: rotateY(90deg);
+}
+.portal > .left-wall > .grid {
+    position: absolute;
+    top: 10%;
+    left: 1%;
+    bottom: 50%;
+    right: 1%;
+    box-sizing: border-box;
+    border-color: #e58f80;
+    border-style: solid;
+    /* border-width: 5px; */
+    background-color: #eba99e;
+    background-image: url("./img/grid_patters.svg");
+    background-size: .7%;
 }
 
 .portal > .right-wall {
-    position: absolute;
-    transform-origin: left center;
-    top: 0px;
-    background-color: green;
-    transform: rotateY(90deg);
-}
-.portal > .right-wall > .grid {
     position: absolute;
     transform-origin: left center;
     top: 0px;
