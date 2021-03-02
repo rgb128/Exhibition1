@@ -28,7 +28,9 @@ window.onkeydown = (e: KeyboardEvent) => {
     const portals = Array.from(document.querySelectorAll('#screen > .portal'));
     for (const portal of portals) {
         const context = (portal as PortalHTML).context;
-        context.clipPath();
+        if (context && context !== CONFIG.screen.data.portalIn) {
+            context.clipPath();
+        }
     }
 }
 
@@ -50,13 +52,13 @@ function animate (time?: number): void {
         millisFromLastCreation = 0;
         // x, y depending on POV (CONFIG.screen.data.x, y)
         new Portal(
-            map(Math.random(), 0, 1, -200, 200), 
-            map(Math.random(), 0, 1, -200, 200), 
-            -5000, 
-            100, 
-            100, 
-            10000, 
-            1);
+            - CONFIG.screen.data.x + map(Math.random(), 0, 1, -CONFIG.portalDefaults.xCreationRadius, CONFIG.portalDefaults.xCreationRadius), 
+            - CONFIG.screen.data.y + map(Math.random(), 0, 1, -CONFIG.portalDefaults.yCreationRadius, CONFIG.portalDefaults.yCreationRadius), 
+            CONFIG.portalDefaults.z, 
+            CONFIG.portalDefaults.width, 
+            CONFIG.portalDefaults.width, 
+            CONFIG.portalDefaults.length, 
+            CONFIG.portalDefaults.speed);
     }
     millisFromLastCreation += delta;
 

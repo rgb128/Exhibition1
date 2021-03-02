@@ -1,22 +1,7 @@
 class Configurations {
-    portalDefaults = {
-        speed: 1,
-        z: 1000,
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100,
-        length: 1000
-    };
     defaults = {
         x: 0,
         y: 0
-    }
-    consts = {
-        perspective: 1000,
-        container: document.getElementById('screen'),
-        movingDelta: 5,
-        creationMs: 1000
     };
     screen = {
         width: document.documentElement.clientWidth,
@@ -29,6 +14,24 @@ class Configurations {
             /** @type {undefined|Portal} */
             portalIn: undefined
         }
+    };
+    one = (this.screen.width + this.screen.height - Math.abs(this.screen.width - this.screen.height)) / 2;
+    portalDefaults = {
+        speed: 1,
+        z: -this.one*7,
+        x: 0,
+        y: 0,
+        width: this.one/4,
+        height: this.one/4,
+        length: this.one*10,
+        xCreationRadius: this.one*1,
+        yCreationRadius: this.one*1,
+    };
+    consts = {
+        perspective: this.one/3,
+        container: document.getElementById('screen'),
+        movingDelta: this.one*.1,
+        creationMs: 2000
     };
     position = {
         x: this.defaults.x,

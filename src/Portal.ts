@@ -86,7 +86,6 @@ export class Portal {
         const pixelDelta = this.speed * ms;
         this.distance += pixelDelta;
         this.root.style.transform = `translateZ(${this.distance}px)`;
-        this.clipPath();
         
         const minDistance = CONFIG.consts.perspective;
         const maxDistance = this.length + CONFIG.consts.perspective;
@@ -102,7 +101,7 @@ export class Portal {
                 return;
             }
         } else {
-            
+            this.clipPath();
             if (this.distance >= minDistance) {
                 const portalEntered = this.isUserInPortal(CONFIG.screen.data.x, CONFIG.screen.data.y);
 
