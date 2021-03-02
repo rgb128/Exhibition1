@@ -7,6 +7,7 @@
     background-image: url("./img/wood-pattern.png");
     background-size: 8%;
     transform: rotateY(90deg);
+    overflow: hidden;
 }
 .portal > .left-wall > .grid {
     position: absolute;
@@ -25,6 +26,7 @@
 
 .portal > .right-wall {
     position: absolute;
+    overflow: hidden;
     transform-origin: left center;
     top: 0px;
     background-color: #eba99e;
