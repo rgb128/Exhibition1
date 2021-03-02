@@ -17,13 +17,13 @@ class Configurations {
     };
     one = (this.screen.width + this.screen.height - Math.abs(this.screen.width - this.screen.height)) / 2;
     portalDefaults = {
-        speed: 1,
-        z: -this.one*7,
+        speed: .7,
+        z: -this.one*5,
         x: 0,
         y: 0,
         width: this.one/4,
         height: this.one/4,
-        length: this.one*10,
+        length: this.one*5,
         xCreationRadius: this.one*1,
         yCreationRadius: this.one*1,
     };

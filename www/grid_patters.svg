@@ -1,0 +1,62 @@
+<svg viewBox="0 0 1000 1000" width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        svg {
+            stroke: transparent;
+            stroke-width: 0;
+            border: none;
+            overflow: hidden;
+        }
+        line{
+            stroke: red;
+            /* 1000*sqrt(2)/4 */
+            stroke-width: 353.553390593;
+            stroke-linecap: butt;
+        }
+    </style>
+<!-- 
+    <line x1="100" y1="100" x2="900" y2="900" class="line1" />
+    <line x1="1000" y1="0" x2="600" y2="400" class="line2" />
+    <line x1="0" y1="1000" x2="400" y2="600" class="line3" /> -->
+    <!-- <line x1="250" y1="250" x2="750" y2="750" class="line1" />
+    <line x1="1000" y1="0" x2="750" y2="250" class="line2" />
+    <line x1="0" y1="1000" x2="250" y2="750" class="line3" /> -->
+
+    
+    <!-- <line class="line1" />
+    <line class="line2" />
+    <line class="line3" /> -->
+
+    <line xmlns="http://www.w3.org/2000/svg" class="line1" x1="176.776695297" y1="176.776695297" x2="823.2233047029999" y2="823.2233047029999"/>
+    <line xmlns="http://www.w3.org/2000/svg" class="line2" x1="1000" y1="0" x2="676.7766952970001" y2="323.223304703"/>
+    <line xmlns="http://www.w3.org/2000/svg" class="line3" x1="0" y1="1000" x2="323.223304703" y2="676.7766952970001"/>
+
+
+
+    <line x1="500" y1="1500" x2="1500" y2="500" />
+    <line x1="-500" y1="500" x2="500" y2="-500" />
+
+    <script>
+'use strict';
+const PADDING = 176.776695297;
+
+const line1 = document.querySelector('.line1');
+const line2 = document.querySelector('.line2');
+const line3 = document.querySelector('.line3');
+
+line1.setAttribute('x1', PADDING + '');
+line1.setAttribute('y1', PADDING + '');
+line1.setAttribute('x2', 1000 - PADDING + '');
+line1.setAttribute('y2', 1000 - PADDING + '');
+
+line2.setAttribute('x1', '1000');
+line2.setAttribute('y1', '0');
+line2.setAttribute('x2', 500 + PADDING + '');
+line2.setAttribute('y2', 500 - PADDING + '');
+
+line3.setAttribute  ('x1', '0');
+line3.setAttribute('y1', '1000');
+line3.setAttribute('x2', 500 - PADDING + '');
+line3.setAttribute('y2', 500 + PADDING + '');
+
+    </script>
+</svg>

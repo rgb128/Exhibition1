@@ -3,11 +3,20 @@
     transform-origin: left center;
     top: 0px;
     left: 0px;
-    background-color: red;
+    /* background-color: red; */
+    background-color: #eba99e;
+    background-image: url("./img/wood-pattern.png");
     transform: rotateY(90deg);
 }
 
 .portal > .right-wall {
+    position: absolute;
+    transform-origin: left center;
+    top: 0px;
+    background-color: green;
+    transform: rotateY(90deg);
+}
+.portal > .right-wall > .grid {
     position: absolute;
     transform-origin: left center;
     top: 0px;
@@ -19,14 +28,14 @@
     transform-origin: top center;
     top: 0px;
     left: 0px;
-    background-color: blue;
+    background-color: #87ceeb;
     transform: rotateX(-90deg);
 }
 .portal > .bottom-wall {
     position: absolute;
     transform-origin: top center;
     left: 0px;
-    background-color: yellow;
+    background-color: #77dd77;
     transform: rotateX(-90deg);
 }
 .portal > .end {
