@@ -13,12 +13,3 @@ window.addEventListener('resize', (e: UIEvent) => {
 });
 
 animate();
-
-// new Portal(
-//     0, 
-//     0, 
-//     CONFIG.consts.perspective, 
-//     CONFIG.portalDefaults.width, 
-//     CONFIG.portalDefaults.width, 
-//     CONFIG.portalDefaults.length, 
-//     CONFIG.portalDefaults.speed);

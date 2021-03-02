@@ -60,6 +60,5 @@ export function animate (time?: number): void {
         }
     }
 
-    // document.title = `x: ${Math.round(CONFIG.screen.data.x)}, y: ${Math.round(CONFIG.screen.data.y)}`;
     requestAnimationFrame(animate);
 }
