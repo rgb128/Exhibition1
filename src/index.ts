@@ -2,7 +2,7 @@ import { CONFIG } from './Configurations';
 import { PortalHTML, Portal } from './Portal';
 import { map } from './map';
 
-window.onkeydown = (e: KeyboardEvent) => {
+window.addEventListener('keydown', (e: KeyboardEvent) => {
     const code = e.code;
 
     let newX = CONFIG.screen.data.x;
@@ -32,9 +32,15 @@ window.onkeydown = (e: KeyboardEvent) => {
             context.clipPath();
         }
     }
-}
+});
 
-
+window.addEventListener('resize', (e: UIEvent) => {
+    const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+    for (const portal of portals) {
+        const context = (portal as PortalHTML).context;
+        context.redraw();
+    }
+});
 
 
 let previousTime = performance.now();

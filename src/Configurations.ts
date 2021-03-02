@@ -51,3 +51,7 @@ function updateConfig() {
     container.style.perspective = CONFIG.consts.perspective + 'px';
 }
 updateConfig();
+
+window.addEventListener('resize', (e: UIEvent) => {
+    updateConfig();
+});
