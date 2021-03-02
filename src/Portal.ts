@@ -101,6 +101,16 @@ export class Portal {
                     // We're in this tunnel
                     CONFIG.screen.data.portalIn = this;
                     console.log('entered');
+                    if (CONFIG.portalsMoveWhenYouAreInPortal) {
+                        const portals = Array.from(document.querySelectorAll('#screen > .portal'));
+                        for (const portal of portals) {
+                            const context = (portal as PortalHTML).context;
+                            if (context !== this) {
+                                context.distance -= this.length;
+                                context.clipPath();
+                            }
+                        }
+                    }
                     return;
                 } else {
                     console.log('deleted');

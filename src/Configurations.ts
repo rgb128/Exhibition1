@@ -3,6 +3,7 @@ class Configurations {
         x: 0,
         y: 0
     };
+    portalsMoveWhenYouAreInPortal = true;
     screen = {
         width: document.documentElement.clientWidth,
         height: document.documentElement.clientHeight,

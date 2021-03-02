@@ -64,7 +64,8 @@ function animate (time?: number): void {
 
     CONFIG.consts.container.style.left = CONFIG.screen.data.x + 'px';
     CONFIG.consts.container.style.top = CONFIG.screen.data.y + 'px';
-    if (CONFIG.screen.data.portalIn) {
+
+    if (CONFIG.screen.data.portalIn && !CONFIG.portalsMoveWhenYouAreInPortal) {
         const portalIn = CONFIG.screen.data.portalIn as Portal;
         portalIn.tick(delta);
     } else {
