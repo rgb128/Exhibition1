@@ -10,7 +10,7 @@ module.exports = {
 
     // output bundles (location)
     output: {
-        path: path.resolve( __dirname, 'www' ),
+        path: path.resolve( __dirname, 'docs' ),
         filename: 'main.js',
     },
 
