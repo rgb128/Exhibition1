@@ -2,8 +2,7 @@ import { Walls } from './Walls';
 /** Builds all walls, and returns it */
 export function buildWalls(width: number, height: number, length: number): Walls {
     const leftWall = buildLeftWall(width / 33);
-    const rightWall = document.createElement('div');
-    rightWall.classList.add('right-wall');
+    const rightWall = buildRighttWall();
     const topWall = buildTopWall();
     const bottomWall = buildBottomWall();
     const endWall = buildEndWall();
@@ -37,4 +36,14 @@ function buildLeftWall(borderWidth: number): HTMLElement {
     grid.style.borderWidth = borderWidth + 'px';
     leftWall.appendChild(grid);
     return leftWall;
+}
+function buildRighttWall(): HTMLElement {
+    const rightWall = document.createElement('div');
+    rightWall.classList.add('right-wall');
+    for (let i = 1; i <= 3; i-=-1) {
+        const painting = document.createElement('div');
+        painting.classList.add('painting', `painting${i}`);
+        rightWall.appendChild(painting);
+    }
+    return rightWall;
 }

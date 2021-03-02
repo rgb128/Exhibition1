@@ -23,7 +23,7 @@ class Configurations {
         y: 0,
         width: this.one/4,
         height: this.one/4,
-        length: this.one*5,
+        length: this.one*3,
         xCreationRadius: this.one*1,
         yCreationRadius: this.one*1,
     };
@@ -31,7 +31,7 @@ class Configurations {
         perspective: this.one/3,
         container: document.getElementById('screen'),
         movingDelta: this.one*.1,
-        creationMs: 2000
+        creationMs: 1500
     };
     position = {
         x: this.defaults.x,

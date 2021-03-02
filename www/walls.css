@@ -27,9 +27,30 @@
     position: absolute;
     transform-origin: left center;
     top: 0px;
-    background-color: green;
+    background-color: #eba99e;
+    background-image: url("./img/wood-pattern.png");
+    background-size: 8%;
+    background-position-x: 3%;
     transform: rotateY(90deg);
 }
+.portal > .right-wall > .painting {
+    position: absolute;
+    border: none;
+    top: 20%;
+    height: 60%;
+    width: calc(100% / 4);
+    background-color: white;
+}
+.portal > .right-wall > .painting.painting1 {
+    left: calc(100% / 16);
+}
+.portal > .right-wall > .painting.painting2{
+    left: calc(100% / 16 * 6);
+}
+.portal > .right-wall > .painting.painting3 {
+    left: calc(100% / 16 * 11);
+}
+
 .portal > .top-wall {
     position: absolute;
     transform-origin: top center;
@@ -50,5 +71,5 @@
     transform-origin: top center;
     top: 0px;
     left: 0px;
-    background-color: white;
+    background-color: #fff0b3;
 }
