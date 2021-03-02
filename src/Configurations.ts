@@ -32,7 +32,8 @@ class Configurations {
         perspective: this.one/3,
         container: document.getElementById('screen'),
         movingDelta: this.one*.1,
-        creationMs: 1500
+        creationMs: 1500,
+        maxTouchMoveSpeed: 2, // px/ms
     };
     position = {
         x: this.defaults.x,
@@ -55,3 +56,11 @@ updateConfig();
 window.addEventListener('resize', (e: UIEvent) => {
     updateConfig();
 });
+
+
+
+const currentTouchMoveSpeed = {
+    x: 0,
+    y: 0
+};
+export { currentTouchMoveSpeed };
