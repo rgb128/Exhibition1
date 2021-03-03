@@ -33,6 +33,14 @@ body{
         transform: translate3d(0px, 0px, -100vw);
     }
 }
+@keyframes portanCreating{
+    0%{
+        opacity: 0.0;
+    }
+    100%{
+        opacity: 1.0;
+    }
+}
 
 
 #screen {
@@ -49,4 +57,21 @@ body{
     position: absolute;
     border: none;
     transform-origin: center;
+}
+
+.portal * {
+    animation: portanCreating 1s linear;
+}
+
+
+.popup {
+    position: fixed;
+    top: 5vh;
+    left: 2vw;
+    width: 94vw;
+    height: 90vh;
+    padding: 2vw;
+    background-color: rgba(255, 255, 255, .8);
+    color: black;
+    box-sizing: border-box;
 }
