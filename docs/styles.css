@@ -33,6 +33,14 @@ body{
         transform: translate3d(0px, 0px, -100vw);
     }
 }
+@keyframes portanCreating{
+    0%{
+        opacity: 0.0;
+    }
+    100%{
+        opacity: 1.0;
+    }
+}
 
 
 #screen {
@@ -49,4 +57,37 @@ body{
     position: absolute;
     border: none;
     transform-origin: center;
+}
+
+.portal * {
+    animation: portanCreating 1s linear;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@keyframes pulsingBackground{
+    0%{
+        background-color: rgba(255, 255, 255, .8);
+    }
+    50% {
+        background-color: rgba(255, 255, 255, 1);
+    }
+    100% {
+        background-color: rgba(255, 255, 255, .8);
+    }
+}
+.popup {
+    position: fixed;
+    top: 10vh;
+    left: 10vw;
+    width: 80vw;
+    height: 80vh;
+    padding: 5vh 2vw;
+
+    animation: pulsingBackground 2s ease-in-out 0s infinite;
+    color: black;
+    box-sizing: border-box;
+    z-index: 2;
+    font-family: 'Roboto', sans-serif;
+    font-size: large;
+    text-align: center;
 }
