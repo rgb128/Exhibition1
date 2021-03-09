@@ -18,7 +18,7 @@ class Configurations {
     };
     one = (this.screen.width + this.screen.height - Math.abs(this.screen.width - this.screen.height)) / 2;
     portalDefaults = {
-        speed: .7,
+        speed: (this.screen.height > this.screen.width) ? .4 : .7,
         z: -this.one*5,
         x: 0,
         y: 0,
