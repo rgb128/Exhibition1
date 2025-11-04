@@ -1,7 +1,7 @@
 import { CONFIG } from './Configurations';
 
-const TEXT_MOBILE = 'Перемещайся. Тыкни, и начинай игру.';
-const TEXT_COMPUTER = 'Перемещайся. Клацни, и начинай игру.';
+const TEXT_MOBILE = 'Move. Click to start.';
+const TEXT_COMPUTER = 'Move. Click to start.';
 
 export class Popup {
     protected readonly root: HTMLElement;
